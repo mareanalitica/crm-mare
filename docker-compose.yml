@@ -18,7 +18,7 @@ services:
   # Gateway: Unifica o roteamento interno de microsserviços do CRM
   # ---------------------------------------------------------------------------
   evocrm_gateway:
-    image: evoapicloud/evo-crm-gateway:latest
+    image: evoapicloud/evo-crm-gateway:1.0.0-rc2
 
     networks:
       - marenet
@@ -49,7 +49,7 @@ services:
   # Auth Service: Autenticação baseada em Rails
   # ---------------------------------------------------------------------------
   evocrm_auth:
-    image: evoapicloud/evo-auth-service-community:latest
+    image: evoapicloud/evo-auth-service-community:1.0.0-rc2
     command: bash -c "bundle exec rails db:migrate 2>&1 || echo 'Migration had errors, continuing...'; bundle exec rails s -p 3001 -b 0.0.0.0"
 
     networks:
@@ -112,7 +112,7 @@ services:
   # Sidekiq Auth: Filas de Autenticação
   # ---------------------------------------------------------------------------
   evocrm_auth_sidekiq:
-    image: evoapicloud/evo-auth-service-community:latest
+    image: evoapicloud/evo-auth-service-community:1.0.0-rc2
     command: ["bundle", "exec", "sidekiq", "-C", "config/sidekiq.yml"]
 
     networks:
@@ -167,7 +167,7 @@ services:
   # CRM Core Web (Rails Backend)
   # ---------------------------------------------------------------------------
   evocrm_crm:
-    image: evoapicloud/evo-ai-crm-community:latest
+    image: evoapicloud/evo-ai-crm-community:1.0.0-rc2
     command: sh -c "until wget -qO- http://evocrm_auth:3001/health >/dev/null 2>&1; do echo 'Waiting for auth...'; sleep 5; done; bundle exec rails db:migrate 2>&1 || echo 'Migration had errors, continuing...'; bundle exec rails s -p 3000 -b 0.0.0.0"
 
     networks:
@@ -222,7 +222,7 @@ services:
   # CRM Sidekiq: Filas do Core CRM
   # ---------------------------------------------------------------------------
   evocrm_crm_sidekiq:
-    image: evoapicloud/evo-ai-crm-community:latest
+    image: evoapicloud/evo-ai-crm-community:1.0.0-rc2
     command: ["bundle", "exec", "sidekiq", "-C", "config/sidekiq.yml"]
 
     networks:
@@ -268,7 +268,7 @@ services:
   # AI Core Service (Go API)
   # ---------------------------------------------------------------------------
   evocrm_core:
-    image: evoapicloud/evo-ai-core-service-community:latest
+    image: evoapicloud/evo-ai-core-service-community:1.0.0-rc2
 
     networks:
       - marenet
@@ -306,7 +306,7 @@ services:
   # AI Processor (FastAPI / Agent Runner)
   # ---------------------------------------------------------------------------
   evocrm_processor:
-    image: evoapicloud/evo-ai-processor-community:latest
+    image: evoapicloud/evo-ai-processor-community:1.0.0-rc2
     command: sh -c "alembic upgrade head 2>&1 || echo 'Alembic migration had errors, continuing...'; python -m scripts.run_seeders; uvicorn src.main:app --host $$HOST --port $$PORT"
 
     volumes:
@@ -359,7 +359,7 @@ services:
   # Bot Runtime: Execução de Bots e Fluxos
   # ---------------------------------------------------------------------------
   evocrm_bot_runtime:
-    image: evoapicloud/evo-bot-runtime:latest
+    image: evoapicloud/evo-bot-runtime:1.0.0-rc2
 
     networks:
       - marenet
@@ -381,7 +381,7 @@ services:
   # Frontend UI (React Interface)
   # ---------------------------------------------------------------------------
   evocrm_frontend:
-    image: evoapicloud/evo-ai-frontend-community:latest
+    image: evoapicloud/evo-ai-frontend-community:1.0.0-rc2
 
     networks:
       - marenet
