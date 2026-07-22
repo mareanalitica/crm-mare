@@ -12,13 +12,7 @@ pipeline {
             steps {
                 echo "Efetuando deploy da stack 'crm' (Evo CRM Community) no Swarm..."
                 sh """
-                    # Carrega as variáveis do .env central da VPS para rodar o stack deploy
-                    if [ -f /root/.env ]; then
-                        set -a
-                        . /root/.env
-                        set +a
-                    fi
-                    
+                    . /srv/mare/envs/load.sh crm-mare
                     docker stack deploy -c docker-compose.yml crm
                 """
             }
