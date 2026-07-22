@@ -12,7 +12,8 @@ pipeline {
             steps {
                 echo "Efetuando deploy da stack 'crm' (Evo CRM Community) no Swarm..."
                 sh """
-                    . /srv/mare/envs/load.sh crm-mare
+                    export PROJECT=crm-mare
+                    . /srv/mare/envs/load.sh
                     docker stack deploy -c docker-compose.yml crm
                 """
             }
